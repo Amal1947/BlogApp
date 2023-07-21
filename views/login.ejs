@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Include Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <style>
+    .container {
+      position: absolute;
+      top: 200px;
+      left: 50%;
+      width: 500px;
+      transform: translateX(-50%);
+      height: 350px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: #f9f9f9;
+      /* Add the box shadow */
+      box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .container h2 {
+      text-align: center;
+    }
+
+    body {
+      background-color: #F0F7FF;
+    }
+
+    .container input[type="text"],
+    .container input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      border-radius: 4px;
+    }
+
+    .container button[type="submit"] {
+      width: 100%;
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px; /* Adjust the padding to make the button smaller */
+      margin: 8px 0;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .container button[type="submit"]:hover {
+      background-color: #45a049;
+    }
+
+    .container .register {
+      text-align: center;
+    }
+
+    .container .register a {
+      color: #333;
+      text-decoration: none;
+    }
+
+    .message {
+      color: red;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Login</h2>
+    <form method="post">
+      <% if (typeof message !== 'undefined') { %>
+        <div class="message"><%= message %></div>
+      <% } %>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email:</label>
+        <input type="text" id="email" name="email" class="form-control" placeholder="Your email.." required>
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">Password:</label>
+        <input type="password" id="password" name="password" class="form-control" placeholder="Your password.." required>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-sm">Submit</button> <!-- Added btn-sm class for smaller size -->
+    </form>
+    <div class="register mt-3">
+      <p>Don't have an account? <a href="/user/signup">Register now</a></p>
+    </div>
+  </div>
+
+  <!-- Include Bootstrap JS (Optional) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
