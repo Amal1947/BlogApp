@@ -1,0 +1,25 @@
+<form>
+    <div class="form-group">
+        <label for="articleName">Article Name</label>
+        <input type="text" class="form-control" id="articleName" name="articleName" required>
+    </div>
+    <div class="form-group">
+        <label for="articleDescription">Article Description</label>
+        <textarea class="form-control" id="articleDescription" name="articleDescription" rows="3" required></textarea>
+    </div>
+    <div class="form-group">
+        <label for="articleContent">Article Content</label>
+        <textarea class="form-control" id="articleContent" name="articleContent" rows="10" required></textarea>
+    </div>
+    <div class="form-group">
+        <label for="topicDropdown">Select Topic</label>
+        <select class="form-control" id="topicDropdown" name="topicDropdown" required>
+            <option value="">-- Select Topic --</option>
+            <option value="technology">Technology</option>
+            <option value="travel">Travel</option>
+            <option value="food">Food</option>
+            <!-- Add more topic options here -->
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

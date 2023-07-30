@@ -1,8 +1,27 @@
 var express = require("express");
 var route = express.Router();
+var session = require("express-session")
 var Admin = require("../mongoose scheemas/admin_scheema");
 var User = require("../mongoose scheemas/userscheema");
 var manager = require("../mongoose scheemas/topicmanagerScheema")
+var catogery = require("../mongoose scheemas/categories_scheema")
+
+route.use(
+  session({
+    secret: "your-secret-key",
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }, 
+  })
+);
+
+route.use(function (req, res, next) {
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); 
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0"); 
+  next();
+});
+
 
 route.get("/login", function(req, res) {
   res.render("login");
@@ -18,6 +37,7 @@ route.post("/login", function(req, res) {
     if (!response) {
       res.render("login", { message: "Invalid email" });
     } else if (response.password === info.password) {
+      req.session.user = response;
       res.redirect("/admin");
     } else {
       res.render("login", { message: "Invalid password" });
@@ -56,7 +76,10 @@ route.post("/edit/:id", function(req, res) {
 
 
 route.get("/addManager" , function(req,res){
-  res.render("addmanager")
+  catogery.find().then(function(response){
+    res.render("addmanager" , {res:response})
+  })
+ 
 })
 
 route.post("/addManager" , function(req,res){
@@ -69,7 +92,7 @@ route.post("/addManager" , function(req,res){
 
   })
   newManager.save().then(function(response){
-    res.redirect("/admin" )
+    res.redirect("/admin/viewMnager" )
   })
   
 })
@@ -99,6 +122,64 @@ route.post("/editTM/:id" , function(req,res){
     res.redirect("/admin/viewMnager")
   })
 })
+
+
+route.get("/addCatogery" , function(req,res){
+  res.render("addCatogory")
+})
+route.post("/addCatogery" ,function(req,res){
+  var info = req.body
+  var newCategory = new catogery({
+    topic:info.topic
+  })
+  newCategory.save().then(function(response){
+    console.log(response)
+    res.redirect("/admin/viewCategory")
+  })
+
+})
+route.get("/viewCategory" , function(req,res){
+  catogery.find().then(function(response){
+    res.render("viewCtegory" ,{cat:response})
+  })
+  
+})
+
+route.get("/editCategory/:id" , function(req,res){
+  var id = req.params.id
+  var info = req.body
+  catogery.findById(id).then(function(response){
+    res.render("editCategory", {cat:response})
+  })
+ 
+})
+route.post("/editCategory/:id" , function(req,res){
+  var id = req.params.id
+  var info = req.body
+  catogery.findByIdAndUpdate(id , {
+    topic:info.topic
+  }).then(function(response){
+    res.redirect("/admin/viewCategory")
+  })
+})
+
+route.get("/delete/:id" , function(req,res){
+  id = req.params.id
+  catogery.findByIdAndRemove(id).then(function(response){
+    res.redirect("/admin/viewCategory")
+  })
+})
+// route.post("/viewCategory" , function(req,res){
+  
+// })
+route.get("/logout", function (req, res) {
+  req.session.destroy(function (err) {
+    if (err) {
+      console.error("Error destroying session:", err);
+    }
+    res.redirect("/");
+  });
+});
 
 
 module.exports = route;

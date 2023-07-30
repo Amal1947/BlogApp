@@ -1,9 +1,14 @@
 var express = require("express")
 var route = express.Router()
+var posts = require("../mongoose scheemas/userPostScheema")
 
 
 route.get("/" , function(req,res){
-    res.render("home")
+    posts.find({approve:1}).then(function(response){
+        res.render("home" ,{res:response})
+    })
+    
+   
 })
 
 route.get("/login" , function(req,res){

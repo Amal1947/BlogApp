@@ -4,62 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Attractive Navbar with Blog Cards</title>
+    <title>Navbar Example</title>
     <!-- Add Bootstrap CSS link -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- Add Font Awesome link for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* Custom styles for the navbar */
         body {
-            margin: 0; /* Remove default body margin */
-        }
-
-        .navbar {
-            background-color: #007bff;
-            position: fixed; /* Fix the navbar at the top */
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 9999; /* Add a high z-index to ensure the navbar stays on top of other elements */
-        }
-
-        .navbar-brand {
-            color: #fff;
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        .navbar-nav .nav-link {
-            color: #fff;
-            font-size: 18px;
-            margin-right: 10px;
-        }
-
-        .navbar-nav .nav-link:hover {
-            color: #fff;
-        }
-
-        .navbar-toggler {
-            border-color: #fff;
-        }
-
-        .navbar-toggler-icon {
-            background-image: url('data:image/svg+xml;charset=utf8,%3Csvg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" width="32" height="32"%3E%3Cpath stroke="%23fff" stroke-miterlimit="10" stroke-width="2" d="M4 8h24M4 16h24M4 24h24"/%3E%3C/svg%3E');
-        }
-
-        .navbar-nav .btn-create-post {
-            background-color: #fff;
-            color: #007bff;
-            border: none;
-            border-radius: 5px;
-            padding: 8px 16px;
-            transition: all 0.3s ease-in-out;
-        }
-
-        .navbar-nav .btn-create-post:hover {
-            background-color: #007bff;
-            color: #fff;
+            padding-top: 20px;
         }
 
         .blog-card {
@@ -72,6 +23,8 @@
             flex-direction: column;
             width: 100%;
         }
+        .blog-card:first-child {
+            margin-top: 60px;}
 
         .blog-title {
             font-size: 20px;
@@ -110,7 +63,6 @@
             background-color: #0056b3;
         }
 
-        /* Like and Comment section */
         .like-comment {
             display: inline-flex;
             margin-top: 15px;
@@ -120,6 +72,46 @@
             color: #555;
             cursor: pointer;
             margin-right: 10px;
+        }
+
+        .navbar {
+            background-color: #007bff;
+            position: fixed; /* Fix the navbar at the top */
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 9999; /* Add a high z-index to ensure the navbar stays on top of other elements */
+        }
+
+        .navbar-brand {
+            color: #fff;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .navbar-nav .nav-item {
+            margin-right: 10px;
+        }
+
+        .navbar-nav .nav-link {
+            color: #fff;
+            font-size: 18px;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #fff;
+        }
+
+        .navbar-nav .nav-item:last-child .nav-link {
+            border: 1px solid #fff;
+            border-radius: 5px;
+            padding: 8px 16px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .navbar-nav .nav-item:last-child .nav-link:hover {
+            background-color: #fff;
+            color: #007bff;
         }
     </style>
 </head>
@@ -139,7 +131,7 @@
                     <a class="nav-link" href="/user/managepost">Manage Post</a>
                 </li>
                 <li class="nav-item">
-                    <button class="btn btn-create-post">View Posts</button>
+                    <a class="nav-link" href="/user">View Post</a>
                 </li>
             </ul>
 
@@ -152,39 +144,64 @@
         </div>
     </nav>
 
-    <div class="container" style="padding-top: 70px;">
-        <% if (typeof res !== 'undefined' && res.length > 0) { %>
-            <% res.forEach((blogPost) => { %>
-            <!-- Blog Card -->
+    <!-- Default content - Posts -->
+    <!-- Default content - Posts -->
+<!-- Default content - Posts -->
+<d<!-- Default content - Posts -->
+   <!-- Default content - Posts -->
+<!-- Default content - Posts -->
+<div class="container">
+    <% if (typeof res !== 'undefined' && res.length > 0) { %>
+        <% res.forEach((blogPost) => { %>
             <div class="blog-card">
                 <div class="card-body">
                     <div class="postName">Posted by <%= blogPost.name %></div>
                     <h5 class="card-title blog-title topicc"><%= blogPost.topic %></h5>
+                    
+                    <!-- Blog Post Status -->
+                    <% if (blogPost.approve === 1) { %>
+                        <div class="alert alert-success" role="alert">
+                            Status: <span class="badge badge-success">Approved</span>
+                        </div>
+                    <% } else if (blogPost.approve === -1) { %>
+                        <div class="alert alert-danger" role="alert">
+                            Status: <span class="badge badge-danger">Declined</span>
+                        </div>
+                    <% } else { %>
+                        <div class="alert alert-warning" role="alert">
+                            Status: <span class="badge badge-warning">Pending</span>
+                        </div>
+                    <% } %>
+
                     <div class="postDate">Posted on: <%= blogPost.date %></div>
                     <div class="card-text blog-content discription">
                         <%= blogPost.articleDiscription %>
                     </div>
-                    <div class="read-more">
-                        <a href="/user/readmoreUser/<%= blogPost._id %>"><button class="read-more-btn">Read More</button></a>
+                    <div class="like-comment">
+                        <!-- Edit button with link -->
+                        <a href="/user/editPost/<%= blogPost._id %>" class="btn btn-success like-comment-btn text-white">Edit</a>
+                        <!-- Delete button with link -->
+                        <a href="/user/deletePost/<%= blogPost._id %>" class="btn btn-danger like-comment-btn text-white">Delete</a>
                     </div>
-                    <!-- <div class="like-comment">
-                        <button class="like-comment-btn"><i class="far fa-thumbs-up"></i> Like</button>
-                        <button class="like-comment-btn"><i class="far fa-comment"></i> Comment</button>
-                    </div> -->
                 </div>
             </div>
-            <% }); %>
-        <% } else { %>
-            <div><%= man.message %></div>
-        <% } %>
-    </div>
+        <% }); %>
+    <% } else { %>
+        <div><%= res.message %></div>
+    <% } %>
+</div>
+
+
+    
+
+
+
+    <!-- Rest of your HTML code -->
 
     <!-- Add Bootstrap JS script -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <!-- Add Font Awesome JS script -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
 </body>
 
 </html>

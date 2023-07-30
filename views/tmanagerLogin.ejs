@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navbar Example</title>
+    <!-- Add Bootstrap CSS link -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Custom styles for the navbar */
+        body {
+            padding-top: 20px;
+        }
+
+        .blog-card {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .blog-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .blog-content {
+            color: #555;
+            line-height: 1.5;
+            flex-grow: 1;
+            overflow: hidden;
+        }
+
+        .blog-content.full-content {
+            overflow: visible;
+        }
+
+        .read-more {
+            text-align: right;
+        }
+
+        /* Make the "Read More" link look like a button */
+        .read-more-btn {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 16px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .read-more-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .like-comment {
+            display: inline-flex;
+            margin-top: 15px;
+        }
+
+        .like-comment-btn {
+            color: #555;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .navbar {
+            border-bottom: 2px solid #ccc;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .navbar-nav .nav-item {
+            margin-right: 10px;
+        }
+
+        .navbar-nav .nav-link {
+            color: #333;
+            font-size: 18px;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #007bff;
+        }
+
+        .navbar-nav .nav-item:last-child .nav-link {
+            border: 1px solid #007bff;
+            border-radius: 5px;
+            padding: 8px 16px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .navbar-nav .nav-item:last-child .nav-link:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+        
+        /* Custom styles for the blog content */
+        .postName {
+            font-size: 18px;
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 5px;
+        }
+        
+        .topicc {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+        
+        .postDate {
+            font-size: 14px;
+            color: #777;
+            margin-top: auto;   
+        }
+        
+        .discription {
+            margin-top: 10px;
+            line-height: 1.6;
+            color: #555; /* Changed the description font color */
+            font-style: italic;/* Changed the description font family */
+            font-size: 16px; /* Changed the description font size */
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <!-- Brand/logo -->
+            <a class="navbar-brand" href="#">Topic Manager</a>
+
+            <!-- Navbar items -->
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/tmanager/tmanager">Pending Posts</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/tmanager/approvePost">Approved Posts</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/tmanager/declined">Declined Posts</a>
+                </li>
+            </ul>
+
+            <!-- Logout button -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/tmanager/logout">
+                        <i class="fas fa-power-off"></i> Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    
+    </nav>
+
+    <!-- Default content - Posts -->
+    <div class="container">
+        <%if(typeof man!=='undefined' && man.length>0){%>
+        <% man.forEach((blogPost) => { %>
+        <div class="blog-card">
+            <div class="card-body">
+                <div class="postName">Posted by <%= blogPost.name %></div>
+                <h5 class="card-title blog-title topicc"><%= blogPost.topic %></h5>
+                <div class="postDate">Posted on: <%= blogPost.date %></div>
+                <div class="card-text blog-content discription">
+                    <%= blogPost.articleDiscription %>
+                </div>
+                <div class="read-more">
+                    <a href="/tmanager/readMore/<%= blogPost._id %>"><button class="read-more-btn">Read More</button></a>
+                </div>
+            </div>
+        </div>
+        <% }); %>
+        <%}else{%>
+        <div><%= man.message%></div>
+        <% } %>
+    </div>
+    <!-- Rest of your HTML code -->
+
+    <!-- Add Bootstrap JS script -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    
+
+</body>
+
+</html>

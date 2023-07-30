@@ -82,9 +82,9 @@
                 <div class="mb-3">
                   <label for="category" class="form-label">Category</label>
                   <select class="form-control" id="category" name="categories">
-                    <option value="sports">Sports</option>
-                    <option value="nature">Nature</option>
-                    <option value="media">Media</option>
+                    <%res.forEach((ress)=>{%>
+                    <option value=<%= ress.topic %>><%= ress.topic%></option>
+                    <%})%>
                     <!-- Add more category options as needed -->
                   </select>
                 </div>

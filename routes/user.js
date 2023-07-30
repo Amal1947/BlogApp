@@ -2,6 +2,9 @@ var express = require("express");
 var route = express.Router();
 var session = require("express-session");
 var User = require("../mongoose scheemas/userscheema");
+var posts = require("../mongoose scheemas/userPostScheema")
+var catogery = require("../mongoose scheemas/categories_scheema");
+const review = require("../mongoose scheemas/revieq_scheema");
 
 
 route.use(function (req, res, next) {
@@ -23,7 +26,10 @@ route.use(
 
 route.get("/", function (req, res) {
   if (req.session.user) {
-    res.render("UserLogin");
+    posts.find({approve:1}).then(function(response){
+      res.render("UserLogin" , {res:response});
+    })
+    
   } else {
     res.redirect("/");
   }
@@ -42,7 +48,7 @@ route.post("/login", function (req, res) {
       res.render("login", { message: "Invalid email..." });
     } else if (response.password === info.password) {
       if (response.approve === 1) {
-        req.session.user = response;
+        req.session.user = response; 
         res.redirect("/user");
       } else {
         res.render("login", { message: "You are not allowed to login ." });
@@ -72,7 +78,7 @@ route.post("/signup", function (req, res) {
         password: userInfo.password,
         date: new Date(),
         type: 1,
-        approve: 1,
+        approve: 1
       });
       newUser.save().then(function (response) {
         req.session.user = newUser;
@@ -93,7 +99,105 @@ route.get("/logout", function (req, res) {
 
 
 route.get("/createpost" , function(req,res){
-  res.send("this is post")
+  catogery.find()
+  .then(function(response){
+    res.render("createPost",{res:response})
+  })
+  
+})
+
+route.post("/createpost" , function(req,res){
+  var d=new Date()
+        month = '/' + (d.getMonth() + 1),
+        day = '/' + d.getDate(),
+        year = d.getFullYear();
+    var time=day+'/ '+month+"/"+year;
+  var info = req.body
+  var user_id = req.session.user._id
+  var name = req.session.user.name
+  var newUser = new posts({
+    title:info.title,
+    articleDiscription:info.articleDescription,
+    topic:info.topic,
+    content:info.content,
+    approve:0,
+    userid:user_id,
+    date:time,
+    name:name
+
+ 
+    
+  })
+  newUser.save().then(function(response){
+    console.log(response)
+    res.redirect("/user")
+  })
+
+})
+route.get("/readmoreUser/:id" , function(req,res){
+  var id = req.params.id
+  posts.findById(id).then(function(response){
+    var postId = response._id
+    review.find({postId:postId}).then(function(result){
+      
+      res.render("readmoreUser" , {res:response,comment:result})
+    })
+   
+  })
+  
+})
+
+route.get("/managepost" , function(req,res){
+ var uid= req.session.user._id
+  posts.find({userid:uid}).then(function(response){
+    res.render("managePost" , {res:response})
+  })
+})
+
+route.get("/editPost/:id" , function(req,res){
+  var id = req.params.id
+  posts.findById(id).then(function(response){
+    res.render("editPost" , {res:response})
+
+  })
+   
+})
+
+route.post("/editPost/:id" , function(req,res){
+  var id = req.params.id
+  var info = req.body
+  posts.findByIdAndUpdate(id , {
+    title:info.title,
+    articleDiscription:info.articleDescription,
+    topic:info.topic,
+    content:info.content,
+    approve:0
+  }).then(function(response){
+    res.redirect("/user/managePost")
+  })
+})
+route.get("/deletePost/:id" , function(req,res){
+  var id = req.params.id
+  posts.findByIdAndRemove(id).then(function(response){
+    res.redirect("/user/managePost")
+  })
+  
+})
+route.post("/comment/:id" , function(req,res){
+  var info = req.body
+  var postId=req.params.id
+  var userName = req.session.user.name
+  console.log(req.session.user)
+
+  var newReview = new review({
+    comments:info.comment,
+    userName:userName,
+    postId:postId
+
+  })
+  newReview.save().then(function(response){
+    res.redirect(`/user/readmoreUser/${postId}`)
+  })
 })
 
 module.exports = route;

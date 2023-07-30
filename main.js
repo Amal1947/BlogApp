@@ -6,6 +6,7 @@ var home_Rouoter = require("./routes/home")
 var user_Router = require("./routes/user")
 var User=require('./mongoose scheemas/userscheema')
 var admin_Router = require("./routes/admin")
+var tmanagre_Router = require("./routes/tmanager")
 
 mongoose.connect("mongodb://127.0.0.1/blog")
 
@@ -24,6 +25,7 @@ app.use(bodyParser.urlencoded({extended:true}))
 app.use("/" , home_Rouoter)
 app.use("/user" , user_Router)
 app.use("/admin" , admin_Router)
+app.use("/tmanager" , tmanagre_Router)
 
 
 

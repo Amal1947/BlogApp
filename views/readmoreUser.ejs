@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Details</title>
+    <!-- Add Bootstrap CSS link -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Add custom CSS for the blog page -->
+    <style>
+        /* ... (existing styles) ... */
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <!-- ... (existing navbar code) ... -->
+    </nav>
+
+    <div class="container">
+        <!-- Blog Post -->
+        <div class="blog-post">
+            <div class="post-info">
+                Posted By: <strong><%= res.name %></strong> | Topic: <strong><%= res.topic %></strong> | Date of Post: <strong><%= res.date %></strong>
+            </div>
+            <hr>
+            <h2 class="post-title"><%= res.topic %></h2>
+            <p class="post-description"><%= res.articleDiscription %></p>
+            <div class="full-content">
+                <p><%= res.content %></p>
+            </div>
+            <div class="container">
+                <!-- Blog Post -->
+                <div class="blog-post">
+                    <!-- ... (existing content) ... -->
+                    <!-- Like Button -->
+                    <div class="d-flex justify-content-between align-items-center">
+                        <button class="btn btn-outline-primary like-btn"><i class="far fa-thumbs-up"></i> Like</button>
+                        <span class="like-count">0 Likes</span>
+                    </div>
+
+                    <!-- Comment Section -->
+                    <div class="comment-section">
+                        <h3>Comments</h3>
+                        <!-- Comment Form -->
+                        <form id="comment-form" method="post" action="/user/comment/<%= res._id%>">
+                            <div class="form-group">
+                                <label for="comment">Write your comment:</label>
+                                <textarea class="form-control" id="comment" name="comment" rows="4" required></textarea>
+                            </div>
+                            <input type="submit" class="btn btn-primary">
+                        </form>
+
+                        <!-- Card for View Comments -->
+                        <div class="card mt-4" id="view-comments-card">
+                            <div class="card-header">
+                                <h5>View Comments</h5>
+                            </div>
+                            <div class="card-body" id="comment-cards-container">
+                                <% comment.forEach((ress) => { %>
+                                    <strong><%= ress.userName %></strong>: <%= ress.comments %><br>
+                                <% }) %>
+                                <!-- Comments will be dynamically added here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Bootstrap JS script -->
+    <!-- Add Font Awesome JS script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+</body>
+
+</html>
