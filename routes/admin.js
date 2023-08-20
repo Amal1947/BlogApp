@@ -22,6 +22,16 @@ route.use(function (req, res, next) {
   next();
 });
 
+function isAuthenticated(req, res, next) {
+  if (req.session.admin) {
+  
+    next();
+  } else {
+   
+    res.redirect("/login");
+  }
+}
+
 
 route.get("/login", function(req, res) {
   res.render("login");
@@ -37,15 +47,16 @@ route.post("/login", function(req, res) {
     if (!response) {
       res.render("login", { message: "Invalid email" });
     } else if (response.password === info.password) {
-      req.session.user = response;
+      req.session.admin = response;
+      console.log(req.session.admin , "adminnnnnn")
       res.redirect("/admin");
     } else {
       res.render("login", { message: "Invalid password" });
     }
   });
-});
+}); 
 
-route.get("/", function(req, res) {
+route.get("/",isAuthenticated, function(req, res) {
   User.find().then(function(response) {
     res.render("adminLogin", { adm: response });
   });

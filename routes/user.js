@@ -64,6 +64,7 @@ route.get("/signup", function (req, res) {
   res.render("signup");
 });
 
+
 route.post("/signup", function (req, res) {
   var userInfo = req.body;
   User.findOne({
@@ -106,28 +107,24 @@ route.get("/createpost" , function(req,res){
   
 })
 
-route.post("/createpost" , function(req,res){
-  var d=new Date()
-        month = '/' + (d.getMonth() + 1),
-        day = '/' + d.getDate(),
-        year = d.getFullYear();
-    var time=day+'/ '+month+"/"+year;
-  var info = req.body
-  var user_id = req.session.user._id
-  var name = req.session.user.name
-  var newUser = new posts({
-    title:info.title,
-    articleDiscription:info.articleDescription,
-    topic:info.topic,
-    content:info.content,
-    approve:0,
-    userid:user_id,
-    date:time,
-    name:name
+route.post("/createpost", function (req, res) {
+  var d = new Date();
+  var options = { year: "numeric", month: "long", day: "numeric" };
+  var formattedDate = d.toLocaleDateString(undefined, options);
 
- 
-    
-  })
+  var info = req.body;
+  var user_id = req.session.user._id;
+  var name = req.session.user.name;
+  var newUser = new posts({
+    title: info.title,
+    articleDiscription: info.articleDescription,
+    topic: info.topic,
+    content: info.content,
+    approve: 0,
+    userid: user_id,
+    date: formattedDate,
+    name: name,
+  });
   newUser.save().then(function(response){
     console.log(response)
     res.redirect("/user")

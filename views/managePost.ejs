@@ -113,6 +113,9 @@
             background-color: #fff;
             color: #007bff;
         }
+        .modal-dialog.modal-dialog-centered {
+        max-width: 500px; /* Set the desired width for the modal */
+    }
     </style>
 </head>
 
@@ -156,7 +159,7 @@
             <div class="blog-card">
                 <div class="card-body">
                     <div class="postName">Posted by <%= blogPost.name %></div>
-                    <h5 class="card-title blog-title topicc"><%= blogPost.topic %></h5>
+                    <h5 class="card-title blog-title topicc"><%= blogPost.title %></h5>
                     
                     <!-- Blog Post Status -->
                     <% if (blogPost.approve === 1) { %>
@@ -181,10 +184,29 @@
                         <!-- Edit button with link -->
                         <a href="/user/editPost/<%= blogPost._id %>" class="btn btn-success like-comment-btn text-white">Edit</a>
                         <!-- Delete button with link -->
-                        <a href="/user/deletePost/<%= blogPost._id %>" class="btn btn-danger like-comment-btn text-white">Delete</a>
-                    </div>
+                        <a href="/user/deletePost/<%= blogPost._id %>" class="btn btn-danger like-comment-btn text-white" data-toggle="modal" data-target="#deleteModal<%= blogPost._id %>">Delete</a>
+    <!-- Modal -->
+   
+    <!-- Modal -->
+    <div class="modal fade" id="deleteModal<%= blogPost._id %>" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this post?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <a href="/user/deletePost/<%= blogPost._id %>" class="btn btn-danger">Delete</a>
                 </div>
             </div>
+        </div>
+    </div>
         <% }); %>
     <% } else { %>
         <div><%= res.message %></div>
